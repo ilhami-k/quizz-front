@@ -1,0 +1,41 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    animation: slideIn 0.7s ease;
+    padding-top: 30px;
+}
+
+.logo {
+    color: var(--color-violet);
+    font-size: 24px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding-left: 2%;
+}
+
+.logo:hover {
+    transform: scale(1.10);
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    gap: 20px;
+    padding-right: 2%;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-links a:hover {
+    color: var(--color-violet);
+}

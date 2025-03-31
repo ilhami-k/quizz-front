@@ -1,0 +1,26 @@
+:root {
+    --color-whited: #f4f4f4;
+    --color-black: #333;
+    --color-white: white;
+    --color-shadow-light: rgba(0, 0, 0, 0.1);
+    --color-shadow-medium: rgba(0, 0, 0, 0.15);
+    --color-violet: #7c3aed;
+    --color-gray: #6b7280;
+    --color-background-color: #e9d5ff;
+    --color-text-dark: #1f2937;
+    --color-transparent: transparent;
+    --color-primary-shadow: rgba(124, 58, 237, 0.3);
+  }
+  
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+  }
+  
+  body {
+      background-color: var(--color-whited);
+      color: var(--color-black);
+      overflow-x: hidden;
+  }
