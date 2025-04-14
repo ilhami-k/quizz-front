@@ -24,7 +24,7 @@ export class ConnexionComponent implements OnInit {
   login() {
     this.errorMessage = '';
     if (!this.username || !this.password) {
-      this.errorMessage = 'Username and password are required.';
+      this.errorMessage = "Le nom d'utilisateur et le mot de passe est requis";
       return;
     }
     this.authService.login(this.username, this.password).subscribe({
@@ -32,7 +32,7 @@ export class ConnexionComponent implements OnInit {
         console.log('Login successful', response);
       },
       error: (error) => {
-        this.errorMessage = 'Invalid credentials. Please try again.';
+        this.errorMessage = 'Identifiants invalides. Veuillez réessayer. ';
         console.error('Login failed', error);
       }
     });
@@ -40,11 +40,11 @@ export class ConnexionComponent implements OnInit {
   signUp (): void {
     this.errorMessage = '';
     if (!this.username || !this.email || !this.password || !this.confPassword) {
-      this.errorMessage = 'All fields are required for signup.';
+      this.errorMessage = "Tous les champs sont requis pour l'inscription.";
       return;
     }
     if (this.password !== this.confPassword) {
-        this.errorMessage = 'Passwords do not match.';
+        this.errorMessage = 'Les mots de passe ne correspondent pas.';
         return;
     }
     //TODO Pour la suite j'aurai besoin d'un bon backend pour pouvoir inscrire des utilisateurs:
