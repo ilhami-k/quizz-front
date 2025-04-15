@@ -10,6 +10,8 @@
     --color-text-dark: #1f2937;
     --color-transparent: transparent;
     --color-primary-shadow: rgba(124, 58, 237, 0.3);
+    --color-error: red;
+    --color-blue: #4255ff;
   }
   
   * {

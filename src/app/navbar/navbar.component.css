@@ -39,3 +39,19 @@
 .nav-links a:hover {
     color: var(--color-violet);
 }
+.connexion {
+    background-color: var(--color-blue);
+    border-radius: 20px;
+    min-width:90px;  
+    min-height: 35px; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.navbar .nav-links a.connexion { 
+    color: white; 
+}
+.navbar .nav-links .connexion:hover {
+    opacity: 90%;
+}
