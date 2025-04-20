@@ -13,13 +13,13 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
     styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-    private uiService = inject(UIService);
+    //*private uiService = inject(UIService); je le garde au cas ou on en aura besoin
     authService = inject(AuthService);
     private elementRef = inject(ElementRef);
     showDashboard = false;
-    goToConnection(): void {
+    /*goToConnection(): void {
         this.uiService.toggleLoginScreen();
-    }
+    }*/
     toggleDashboard(event: MouseEvent): void {
         event.stopPropagation();
         this.showDashboard = !this.showDashboard;
