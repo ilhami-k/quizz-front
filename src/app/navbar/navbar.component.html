@@ -1,11 +1,21 @@
 <nav class="navbar">
-    <div class="logo">Quiz-IT</div>
-    <div class="nav-links">
-        <a routerLink="/">Accueil</a>
-        <a routerLink="/quiz">Quiz</a>
-        <a routerLink="/classement">Classement</a>
-        <a routerLink="/resultat">Résultat</a>
-        <a routerLink="/dashboard">Tableau de bord</a>
-        <a (click)="goToConnection()" class='connexion' style="cursor: pointer;">Connexion</a>
-    </div>
+  <div class="logo" routerLink="/">Quiz-IT</div>
+  <div class="nav-links"(click)="closeDashboard()">
+      <a routerLink="/" ><span>Accueil</span></a>
+      <a routerLink="/quiz"><span>Quiz</span></a>
+      <a routerLink="/classement"><span>Classement</span></a>
+      <a routerLink="/resultat"><span>Résultat</span></a>
+
+      <ng-container *ngIf="authService.isLoggedIn; else loginButton">
+        <div style="position: relative;">
+          <a (click)="toggleDashboard($event)" class='tableau-de-bord-btn' style="cursor: pointer;"> <span>Tableau de bord</span> </a>
+          <app-dashboard *ngIf="showDashboard" (closeMenu)="closeDashboard()"></app-dashboard>
+      </div>
+      </ng-container>
+
+      <ng-template #loginButton>
+          <a routerLink="/connexion" class='connexion' style="cursor: pointer;">  <!--TODO pouvoir aller en arriere lorsqu'on clique sur connexion une deuxième fois quand on est sur la page connexion-->
+              <span>Connexion</span> </a>
+      </ng-template>
+      </div>
 </nav>
