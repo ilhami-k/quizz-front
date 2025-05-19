@@ -1,0 +1,107 @@
+/* src/app/quiz/quiz.component.css */
+.quiz-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--color-violet); /* Using your defined CSS variable */
+  margin-bottom: 30px;
+}
+
+.loading-indicator,
+.error-message,
+.no-quizzes {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.loading-indicator p {
+  font-size: 1.2em;
+  color: var(--color-gray);
+}
+
+.error-message {
+  background-color: #f8d7da; /* Light red for errors */
+  color: #721c24; /* Dark red text for errors */
+  border: 1px solid #f5c6cb;
+}
+
+.error-message p {
+  margin-bottom: 15px;
+}
+
+.no-quizzes {
+  background-color: #e2e3e5; /* Light gray */
+  color: var(--color-gray);
+}
+
+.quiz-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.quiz-card {
+  background-color: var(--color-white);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--color-shadow-light);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.quiz-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--color-shadow-medium);
+}
+
+.quiz-card h2 {
+  font-size: 1.5em;
+  color: var(--color-text-dark);
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.quiz-card p {
+  font-size: 1em;
+  color: var(--color-gray);
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  text-decoration: none; /* If you use <a> tags as buttons */
+  display: inline-block; /* For proper spacing if using <a> */
+}
+
+.btn-retry {
+  background-color: var(--color-violet);
+  color: var(--color-white);
+}
+
+.btn-retry:hover {
+  opacity: 0.9;
+}
+
+.btn-start-quiz {
+  background-color: var(--color-blue); /* Using your defined CSS variable */
+  color: var(--color-white);
+  width: 100%;
+  text-align: center;
+}
+
+.btn-start-quiz:hover {
+  opacity: 0.85;
+}
