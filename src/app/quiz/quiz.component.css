@@ -1,4 +1,3 @@
-/* src/app/quiz/quiz.component.css */
 .quiz-container {
   max-width: 900px;
   margin: 20px auto;
@@ -82,8 +81,8 @@
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s ease;
-  text-decoration: none; /* If you use <a> tags as buttons */
-  display: inline-block; /* For proper spacing if using <a> */
+  text-decoration: none;
+  display: inline-block; 
 }
 
 .btn-retry {
@@ -96,7 +95,7 @@
 }
 
 .btn-start-quiz {
-  background-color: var(--color-blue); /* Using your defined CSS variable */
+  background-color: var(--color-blue); 
   color: var(--color-white);
   width: 100%;
   text-align: center;

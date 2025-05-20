@@ -10,9 +10,12 @@ export class QuizzService {
 
   constructor() { }
   private http: HttpClient = inject(HttpClient);
-  private api_url = 'https://localhost:5001/quizzes';
+  private apiUrl = 'https://localhost:5001/quizzes';
 
   getQuizzes (): Observable <any> {
-    return this.http.get<any>(this.api_url)
+    return this.http.get<any>(this.apiUrl);
+  }
+  getQuizById(id:number): Observable <any> {
+    return this.http.get<any> (`${this.apiUrl}/${id}`);
   }
 }

@@ -1,25 +1,19 @@
-// src/app/quiz/quiz.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { QuizzService } from '../services/quizz.service'; // Correct path to your service
-
-// Define an interface for the Quiz object for better type safety
-export interface Quiz {
-  id: number;
-  title: string;
-  description?: string; // Assuming description is optional
-  // Add other properties your quiz object might have
-}
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; 
+import { QuizzService } from '../services/quizz.service';
+import { Quiz } from '../models/quiz.model';
 
 @Component({
   selector: 'app-quiz',
-  standalone: true, // Ensure it's a standalone component
-  imports: [CommonModule], // Add CommonModule for *ngIf, *ngFor
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.css'] // Corrected styleUrls
+  styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
   private quizzService = inject(QuizzService);
+  private router = inject(Router); 
 
   quizzes: Quiz[] = [];
   isLoading: boolean = true;
@@ -33,21 +27,30 @@ export class QuizComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
     this.quizzService.getQuizzes().subscribe({
-      next: (data: Quiz[]) => { // Use the Quiz interface
+      next: (data: Quiz[]) => {
         this.quizzes = data;
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Error fetching quizzes:', err);
         this.error = 'Failed to load quizzes. Please try again later.';
-        // You could inspect 'err' for more specific messages from the backend
         if (err.status === 0) {
-          this.error = 'Could not connect to the server. Please ensure the backend is running.';
+          this.error = 'Could not connect to the server. Please ensure the backend is running and CORS is configured.';
         } else if (err.message) {
             this.error = `Failed to load quizzes: ${err.message}`;
         }
         this.isLoading = false;
       }
     });
+  }
+
+  viewQuizDetails(quizId: number): void {
+    console.log('Attempting to navigate to details for quizId:', quizId);
+    if (quizId === undefined || quizId === null) {
+      console.error('Navigation aborted: quizId is undefined or null.');
+      this.error = 'Cannot view details for this quiz as its ID is missing.';
+      return;
+    }
+    this.router.navigate(['/quiz', quizId]);
   }
 }

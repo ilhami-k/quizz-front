@@ -1,0 +1,45 @@
+<div class="quiz-detail-container">
+  <button (click)="goBack()" class="btn btn-back">← Back to Quizzes</button>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Loading quiz details...</p>
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error && quiz" class="quiz-content">
+    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <p *ngIf="quiz.description" class="quiz-description">{{ quiz.description }}</p>
+
+    <div class="quiz-meta">
+      <span *ngIf="quiz.category" class="meta-item category">
+        <strong>Category:</strong> {{ quiz.category }}
+      </span>
+      <span *ngIf="quiz.difficultyLevel" class="meta-item difficulty">
+        <strong>Difficulty:</strong> {{ quiz.difficultyLevel }}
+      </span>
+      <span *ngIf="quiz.totalQuestions !== undefined" class="meta-item questions-count">
+        <strong>Questions:</strong> {{ quiz.totalQuestions }}
+      </span>
+      <span *ngIf="quiz.questions && quiz.totalQuestions === undefined" class="meta-item questions-count">
+        <strong>Questions:</strong> {{ quiz.questions.length }}
+      </span>
+      <span *ngIf="quiz.participantsCount !== undefined" class="meta-item participants-count">
+        <strong>Participants:</strong> {{ quiz.participantsCount }}
+      </span>
+    </div>
+
+    <div class="quiz-actions">
+      <button (click)="startActualQuiz(quiz.quizId)" class="btn btn-start-actual-quiz">
+        Start This Quiz!
+      </button>
+    </div>
+
+    </div>
+
+  <div *ngIf="!isLoading && !error && !quiz" class="no-quiz-data">
+    <p>Quiz data could not be loaded or the quiz does not exist.</p>
+  </div>
+</div>
