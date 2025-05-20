@@ -1,8 +1,8 @@
 <div class="quiz-container">
-  <h1 class="page-title">Available Quizzes</h1>
+  <h1 class="page-title">Les quiz disponibles</h1>
 
   <div *ngIf="isLoading" class="loading-indicator">
-    <p>Loading quizzes...</p>
+    <p>Chargement des quiz...</p>
   </div>
 
   <div *ngIf="error && !isLoading" class="error-message">
@@ -18,7 +18,7 @@
     <div *ngFor="let quiz of quizzes" class="quiz-card" (click)="viewQuizDetails(quiz.quizId)" role="button" tabindex="0" (keydown.enter)="viewQuizDetails(quiz.quizId)">
       <h2>{{ quiz.title }}</h2>
       <p *ngIf="quiz.description">{{ quiz.description }}</p>
-      <button class="btn btn-view-details" (click) = "viewQuizDetails(quiz.quizId)">View Details</button>
+      <button class="btn btn-view-details" (click) = "viewQuizDetails(quiz.quizId)">Voir les détails</button>
     </div>
   </div>
 </div>

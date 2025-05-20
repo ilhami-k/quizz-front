@@ -1,8 +1,8 @@
 <div class="quiz-detail-container">
-  <button (click)="goBack()" class="btn btn-back">← Back to Quizzes</button>
+  <button (click)="goBack()" class="btn btn-back">←Retour</button>
 
   <div *ngIf="isLoading" class="loading-indicator">
-    <p>Loading quiz details...</p>
+    <p>Chargement des détails du quiz</p>
   </div>
 
   <div *ngIf="error && !isLoading" class="error-message">
@@ -15,10 +15,10 @@
 
     <div class="quiz-meta">
       <span *ngIf="quiz.category" class="meta-item category">
-        <strong>Category:</strong> {{ quiz.category }}
+        <strong>Categorie:</strong> {{ quiz.category }}
       </span>
       <span *ngIf="quiz.difficultyLevel" class="meta-item difficulty">
-        <strong>Difficulty:</strong> {{ quiz.difficultyLevel }}
+        <strong>Difficulté:</strong> {{ quiz.difficultyLevel }}
       </span>
       <span *ngIf="quiz.totalQuestions !== undefined" class="meta-item questions-count">
         <strong>Questions:</strong> {{ quiz.totalQuestions }}
@@ -33,13 +33,13 @@
 
     <div class="quiz-actions">
       <button (click)="startActualQuiz(quiz.quizId)" class="btn btn-start-actual-quiz">
-        Start This Quiz!
+        Commencer cette quiz
       </button>
     </div>
 
     </div>
 
   <div *ngIf="!isLoading && !error && !quiz" class="no-quiz-data">
-    <p>Quiz data could not be loaded or the quiz does not exist.</p>
+    <p>Quiz n'existe pas</p>
   </div>
 </div>

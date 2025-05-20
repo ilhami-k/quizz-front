@@ -32,7 +32,7 @@ export class QuizDetailsComponent implements OnInit {
           if (id) {
             return this.quizzService.getQuizById(+id).pipe(
               catchError(err => {
-                console.error('Error fetching detials',err);
+                console.error('Erronr fetching detials',err);
                 this.error = `Failed to load quizz details. Status: ${err.status}`;
                 if (err.status === 0) {
                   this.error = `Could not connect to the server`
