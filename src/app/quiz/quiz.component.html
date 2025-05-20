@@ -1,1 +1,24 @@
-<p>quiz works!</p>
+<div class="quiz-container">
+  <h1 class="page-title">Available Quizzes</h1>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Loading quizzes...</p>
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="loadQuizzes()" class="btn btn-retry">Try Again</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error && quizzes.length === 0" class="no-quizzes">
+    <p>No quizzes available at the moment. Please check back later!</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error && quizzes.length > 0" class="quiz-list">
+    <div *ngFor="let quiz of quizzes" class="quiz-card" (click)="viewQuizDetails(quiz.quizId)" role="button" tabindex="0" (keydown.enter)="viewQuizDetails(quiz.quizId)">
+      <h2>{{ quiz.title }}</h2>
+      <p *ngIf="quiz.description">{{ quiz.description }}</p>
+      <button class="btn btn-view-details" (click) = "viewQuizDetails(quiz.quizId)">View Details</button>
+    </div>
+  </div>
+</div>
