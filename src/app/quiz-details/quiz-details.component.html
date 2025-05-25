@@ -15,7 +15,7 @@
 
     <div class="quiz-meta">
       <span *ngIf="quiz.category" class="meta-item category">
-        <strong>Categorie:</strong> {{ quiz.category }}
+        <strong>Categorie:</strong> {{ quiz.category.name }}
       </span>
       <span *ngIf="quiz.difficultyLevel" class="meta-item difficulty">
         <strong>Difficulté:</strong> {{ quiz.difficultyLevel }}
@@ -28,6 +28,9 @@
       </span>
       <span *ngIf="quiz.participantsCount !== undefined" class="meta-item participants-count">
         <strong>Participants:</strong> {{ quiz.participantsCount }}
+      </span>
+      <span class = 'meta-item owner-name'> 
+        <strong>Created by: </strong> {{quiz.creator?.name}}
       </span>
     </div>
 
