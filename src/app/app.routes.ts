@@ -5,6 +5,7 @@ import { ClassementComponent } from './classement/classement.component';
 import { ResultatComponent } from './resultat/resultat.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
+import { UserProfilComponent } from './user-profil/user-profil.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
     { path: 'quiz/:id', component: QuizDetailsComponent }, 
     { path: 'classement', component: ClassementComponent },
     { path: 'resultat', component: ResultatComponent },
-    { path: 'connexion', component: ConnexionComponent }
-];
+    { path: 'connexion', component: ConnexionComponent },
+    { path : 'profil', component: UserProfilComponent }
+]
