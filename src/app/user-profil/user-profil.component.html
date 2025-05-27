@@ -1,0 +1,22 @@
+<div class="container">
+    
+  <div class="profile-view">
+    <h3>Profil Utilisateur</h3>
+    <p>Nom : {{ user.name }}</p>
+    <p>Email : {{ user.email }}</p>
+  </div>
+
+
+  <div class="profile-edit">
+    <h3>Modifier le profil</h3>
+    <form (ngSubmit)="saveChanges()">
+      <label>Nom</label>
+      <input type="text" [(ngModel)]="editedUser.name" name="name" />
+
+      <label>Email</label>
+      <input type="email" [(ngModel)]="editedUser.email" name="email" />
+
+      <button type="submit">Enregistrer</button>
+    </form>
+  </div>
+</div>
