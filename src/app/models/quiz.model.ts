@@ -9,8 +9,18 @@ export interface Quiz {
   title: string;
   description?: string;
   questions?: QuizQuestion[];
-  category?: string;
+  category?: Category;
+  creator?: Creator;
   difficultyLevel?: string;
   totalQuestions?: number; 
   participantsCount?: number;
+}
+export interface Category {
+  categoryId: number;
+  name: string;
+  createdAt ?: string;
+}
+export interface Creator {
+  userId: number;
+  name: string;
 }
