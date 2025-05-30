@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private api_url =  "https://dummyjson.com/auth/login";
+  private api_url =  "https://localhost:7223/users/auth";
   private http: HttpClient = inject(HttpClient);
   public isLoggedIn: boolean = false;
   constructor(){
