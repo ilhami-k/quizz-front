@@ -46,14 +46,12 @@ export class ConnexionComponent implements OnInit {
 
     this.authService.login(username, password).subscribe({
       next: (response) => {
-
-        if (response && response.id && response.accessToken) { 
-          this.authService.setLoggedIn(true, response.accessToken);
+        if (response && response.user && response.user.userId && response.authToken) {
+          this.authService.setLoggedIn(true, response.authToken);
           this.uiService.showLoginScreen = false;
            this.router.navigate(['/']);
-
         } else {
-          this.errorMessage = 'Erreur de connexion: Réponse invalide du serveur.';
+          this.errorMessage = 'Erreur de connexion: Réponse invalide du serveur. Structure attendue non conforme.';
           this.authService.setLoggedIn(false);
         }
       },
