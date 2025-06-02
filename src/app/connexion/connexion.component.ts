@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../services/auth.service';
 import { UIService } from '../services/ui.service';
 import { Router } from '@angular/router';
+import { RegisterService } from '../services/register.service'; // Import correct
 
 @Component({
   selector: 'app-connexion',
@@ -18,6 +19,7 @@ export class ConnexionComponent implements OnInit {
   connexionForm!: FormGroup;
 
   private authService: AuthService = inject(AuthService);
+  private registerService: RegisterService = inject(RegisterService); // <-- LIGNE AJOUTÉE ICI
   private router: Router = inject(Router);
   private uiService: UIService = inject(UIService);
   private fb: FormBuilder = inject(FormBuilder);
@@ -71,24 +73,59 @@ export class ConnexionComponent implements OnInit {
     this.errorMessage = '';
 
     if (this.connexionForm.invalid) {
-       this.errorMessage = "Veuillez corriger les erreurs pour l'inscription.";
-       this.connexionForm.markAllAsTouched();
-       return;
+        this.errorMessage = "Veuillez remplir correctement tous les champs requis.";
+        this.connexionForm.markAllAsTouched(); // Marque tous les champs comme "touchés" pour afficher les erreurs de validation
+        return;
     }
 
-    const { username, email, password } = this.connexionForm.value;
-    this.errorMessage = "Fonctionnalité d'inscription non implémentée.";
+    if (this.connexionForm.value.password !== this.connexionForm.value.confPassword) {
+      this.errorMessage = "Les mots de passe ne correspondent pas.";
+      this.connexionForm.get('confPassword')?.setErrors({'mismatch': true}); // Ajoute une erreur spécifique au champ confPassword
+      return;
+    }
+
+    const { username, email, password, confPassword } = this.connexionForm.value;
+
+    const userData = {
+      username: username,
+      email: email,
+      password: password,
+      confirmPassword: confPassword 
+    };
+
+    this.registerService.register(userData).subscribe({
+      next: (response) => {
+        console.log('Inscription réussie !', response);
+        this.errorMessage = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
+        this.connexionForm.reset(); 
+        this.switchStates(); 
+      },
+      error: (error) => {
+        // Gestion des erreurs
+        console.error('Erreur lors de l\'inscription :', error);
+        if (error.status === 400 && error.error) {
+          this.errorMessage = error.error.message || 'Erreur lors de l\'inscription. Veuillez vérifier vos informations.';
+        } 
+        else if (error.status === 0) {
+          this.errorMessage = "Impossible de se connecter au serveur. Veuillez réessayer plus tard.";
+        }
+        else {
+          this.errorMessage = `Une erreur inattendue est survenue (${error.status || 'inconnue'}).`;
+        }
+      }
+    });
   }
 
   switchStates(): void {
     this.isLogin = !this.isLogin;
     this.errorMessage = '';
+    this.connexionForm.reset(); // Réinitialise le formulaire lors du switch
+    // Réinitialise spécifiquement les erreurs de validation si besoin (le reset() devrait suffire)
     this.connexionForm.get('username')?.setErrors(null);
     this.connexionForm.get('email')?.setErrors(null);
     this.connexionForm.get('password')?.setErrors(null);
     this.connexionForm.get('confPassword')?.setErrors(null);
   }
-
 
   get username() { return this.connexionForm.get('username'); }
   get email() { return this.connexionForm.get('email'); }
