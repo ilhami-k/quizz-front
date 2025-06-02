@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../services/auth.service';
 import { UIService } from '../services/ui.service';
 import { Router } from '@angular/router';
-import { RegisterService } from '../services/register.service'; // Import correct
+import { RegisterService } from '../services/register.service';
 
 @Component({
   selector: 'app-connexion',
@@ -19,7 +19,7 @@ export class ConnexionComponent implements OnInit {
   connexionForm!: FormGroup;
 
   private authService: AuthService = inject(AuthService);
-  private registerService: RegisterService = inject(RegisterService); // <-- LIGNE AJOUTÉE ICI
+  private registerService: RegisterService = inject(RegisterService);
   private router: Router = inject(Router);
   private uiService: UIService = inject(UIService);
   private fb: FormBuilder = inject(FormBuilder);
@@ -74,13 +74,13 @@ export class ConnexionComponent implements OnInit {
 
     if (this.connexionForm.invalid) {
         this.errorMessage = "Veuillez remplir correctement tous les champs requis.";
-        this.connexionForm.markAllAsTouched(); // Marque tous les champs comme "touchés" pour afficher les erreurs de validation
+        this.connexionForm.markAllAsTouched(); 
         return;
     }
 
     if (this.connexionForm.value.password !== this.connexionForm.value.confPassword) {
       this.errorMessage = "Les mots de passe ne correspondent pas.";
-      this.connexionForm.get('confPassword')?.setErrors({'mismatch': true}); // Ajoute une erreur spécifique au champ confPassword
+      this.connexionForm.get('confPassword')?.setErrors({'mismatch': true});
       return;
     }
 
