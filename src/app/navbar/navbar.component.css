@@ -47,7 +47,7 @@ min-height: 35px;
 display: inline-flex;
 align-items: center;
 justify-content: center;
-
+padding: 10px 15px;
 }
 .navbar .nav-links a.connexion {
   color: white;
