@@ -46,5 +46,4 @@ export class AuthService {
     }
 
   }
-  //TODO signUp (email:string, username:string, password:string): Observable <any> {}
 }
