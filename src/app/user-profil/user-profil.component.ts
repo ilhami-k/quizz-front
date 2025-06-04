@@ -1,26 +1,35 @@
 import { Component } from '@angular/core';
+import { UserProfilService, } from '../services/user-profil.service';
+import { UserProfil } from '../models/UserProfil.model';
+import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profil',
-  imports: [FormsModule,],
+  imports: [FormsModule,CommonModule],
   templateUrl: './user-profil.component.html',
   styleUrl: './user-profil.component.css'
 })
 export class UserProfilComponent {
+  user! : UserProfil; 
+  userId: number = 1;
 
-  user = {
-    name: 'John Doe',
-    email: 'jeandupont@gmailcom',
+  constructor(private userProfilService: UserProfilService) {}
+
+  ngOnInit() {
+    this.getUserById();
   }
 
-    //visuel logique front en attendant le back 
-  editedUser = { ...this.user };
-
-  saveChanges() {
-    this.user = { ...this.editedUser };
-    alert('Profil mis à jour (en front uniquement)');
-
-    }
+  getUserById() : void {
+    this.userProfilService.getUserbyId(this.userId).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => {
+        console.error('Erreur:', err);
+        
+      }
+    });
   }
+}
