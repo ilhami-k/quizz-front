@@ -22,5 +22,5 @@ export interface Category {
 }
 export interface Creator {
   userId: number;
-  name: string;
+  username: string;
 }
