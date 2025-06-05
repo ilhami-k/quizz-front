@@ -53,4 +53,7 @@ export class QuizComponent implements OnInit {
     }
     this.router.navigate(['/quiz', quizId]);
   }
+  createQuiz(): void {
+    this.router.navigate(['quiz/create']);
+  }
 }

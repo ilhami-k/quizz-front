@@ -1,0 +1,124 @@
+<div class="quiz-creation-container">
+  <h2>Créer un nouveau quiz</h2>
+
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+  <div *ngIf="successMessage && !isLoading" class="success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Envoi de votre quiz en cours...</p>
+  </div>
+
+  <div *ngIf="!authService.isLoggedIn && !isLoading && !successMessage" class="login-prompt">
+      <p>Vous devez être connecté pour créer un quiz.</p>
+      <a routerLink="/connexion" class="btn btn-primary">Connexion ou Inscription</a>
+  </div>
+
+  <form [formGroup]="quizForm" (ngSubmit)="onSubmit()" *ngIf="authService.isLoggedIn && !isLoading && !successMessage">
+    <div class="form-section quiz-details-section">
+      <h3>1. Détails du Quiz</h3>
+      <div class="form-group">
+        <label for="title">Titre du Quiz <span class="required">*</span></label>
+        <input type="text" id="title" formControlName="title" placeholder="ex: Challenge des Capitales Mondiales">
+        <div *ngIf="quizForm.get('title')?.invalid && quizForm.get('title')?.touched" class="validation-error">
+          Le titre est requis.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description (Optionnel)</label>
+        <textarea id="description" formControlName="description" placeholder="Un bref résumé du sujet du quiz."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Catégorie <span class="required">*</span></label>
+        <select id="category" formControlName="categoryId">
+          <option [ngValue]="null" disabled selected>-- Sélectionnez une catégorie --</option>
+          <option *ngFor="let cat of categories" [value]="cat.categoryId">{{ cat.name }}</option>
+        </select>
+        <div *ngIf="quizForm.get('categoryId')?.invalid && quizForm.get('categoryId')?.touched" class="validation-error">
+          La sélection d'une catégorie est requise.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="difficultyLevel">Niveau de Difficulté <span class="required">*</span></label>
+        <select id="difficultyLevel" formControlName="difficultyLevel">
+          <option value="" disabled selected>-- Sélectionnez la difficulté --</option>
+          <option *ngFor="let level of difficultyLevels" [value]="level">{{ level }}</option>
+        </select>
+        <div *ngIf="quizForm.get('difficultyLevel')?.invalid && quizForm.get('difficultyLevel')?.touched" class="validation-error">
+          Le niveau de difficulté est requis.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section questions-outer-section">
+      <h3>2. Questions</h3>
+      <div formArrayName="questions">
+        <div *ngFor="let questionCtrl of questionsFormArray.controls; let i = index" [formGroupName]="i" class="question-block">
+          <div class="question-header">
+            <h4>Question {{ i + 1 }}</h4>
+            <button type="button" (click)="removeQuestion(i)" class="btn btn-remove btn-remove-question" *ngIf="questionsFormArray.length > 1">
+              Supprimer la Question {{ i + 1 }}
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label for="questionText-{{i}}">Texte de la Question <span class="required">*</span></label>
+            <input type="text" id="questionText-{{i}}" formControlName="questionText" placeholder="Entrez la question">
+            <div *ngIf="questionCtrl.get('questionText')?.invalid && questionCtrl.get('questionText')?.touched" class="validation-error">
+              Le texte de la question est requis.
+            </div>
+          </div>
+
+          <div class="form-group inline-group">
+            <div>
+                <label for="questionType-{{i}}">Type <span class="required">*</span></label>
+                <select id="questionType-{{i}}" formControlName="questionType">
+                    <option *ngFor="let type of questionTypes" [value]="type.value">{{ type.name }}</option>
+                </select>
+            </div>
+            <div>
+                <label for="timer-{{i}}">Chronomètre (secs) <span class="required">*</span></label>
+                <input type="number" id="timer-{{i}}" formControlName="timer" min="5" max="300">
+                <div *ngIf="questionCtrl.get('timer')?.invalid && questionCtrl.get('timer')?.touched" class="validation-error">
+                    Chronomètre (5-300s) requis.
+                </div>
+            </div>
+          </div>
+
+
+          <div class="answers-section" formArrayName="answers">
+            <h5>Réponses <span class="required">*</span> (Cochez la ou les bonnes réponses)</h5>
+            <div *ngFor="let answerCtrl of answersFormArray(i).controls; let j = index" [formGroupName]="j" class="answer-block">
+              <div class="form-group answer-input-group">
+                <input type="text" id="answerText-{{i}}-{{j}}" formControlName="answerText" placeholder="Option de réponse {{ j + 1 }}" class="answer-text-input">
+                <label class="is-correct-label" for="isCorrect-{{i}}-{{j}}">
+                  <input type="checkbox" id="isCorrect-{{i}}-{{j}}" formControlName="isCorrect"> Correct ?
+                </label>
+                <button type="button" (click)="removeAnswer(i, j)" class="btn btn-remove btn-remove-answer" *ngIf="answersFormArray(i).length > 2">
+                  &times;
+                </button>
+              </div>
+              <div *ngIf="answerCtrl.get('answerText')?.invalid && answerCtrl.get('answerText')?.touched" class="validation-error validation-error-answer">
+                Le texte de la réponse est requis.
+              </div>
+            </div>
+            <button type="button" (click)="addAnswer(i)" class="btn btn-add btn-add-answer" *ngIf="answersFormArray(i).length < 6">+ Ajouter une Option de Réponse</button>
+          </div>
+          <hr *ngIf="i < questionsFormArray.length - 1" class="question-divider">
+        </div>
+      </div>
+      <button type="button" (click)="addQuestion()" class="btn btn-add btn-add-question">+ Ajouter une Autre Question</button>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="quizForm.invalid || isLoading" class="btn btn-submit btn-primary">
+        {{ isLoading ? 'Envoi du Quiz en cours...' : 'Créer le Quiz' }}
+      </button>
+    </div>
+  </form>
+</div>

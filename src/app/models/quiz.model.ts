@@ -1,8 +1,8 @@
 export interface QuizQuestion {
-  id: number;
-  text: string;
-  options: string[];
-  correctAnswer: string; 
+  questionId: number;
+  questionText: string;
+  questionType: number;
+  answers: Answer[]
 }
 export interface Quiz {
   quizId: number;
@@ -10,8 +10,8 @@ export interface Quiz {
   description?: string;
   questions?: QuizQuestion[];
   category?: Category;
-  creator?: Creator;
-  difficultyLevel?: string;
+  creatorUsername?: string;
+  dificulty?: number;
   totalQuestions?: number; 
   participantsCount?: number;
 }
@@ -20,7 +20,8 @@ export interface Category {
   name: string;
   createdAt ?: string;
 }
-export interface Creator {
-  userId: number;
-  username: string;
+export interface Answer {
+  answerId?: number;
+  answerText: string;
+  isCorrect: boolean;
 }

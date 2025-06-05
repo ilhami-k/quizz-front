@@ -82,7 +82,7 @@
   font-weight: 500;
   transition: background-color 0.3s ease;
   text-decoration: none;
-  display: inline-block; 
+  display: inline-block;
 }
 
 .btn-retry {
@@ -95,7 +95,7 @@
 }
 
 .btn-start-quiz {
-  background-color: var(--color-blue); 
+  background-color: var(--color-blue);
   color: var(--color-white);
   width: 100%;
   text-align: center;
@@ -103,4 +103,33 @@
 
 .btn-start-quiz:hover {
   opacity: 0.85;
+}
+
+/* Styles for the "Create Quiz" button */
+.create {
+  display: flex;
+  justify-content: flex-end; /* Aligns content to the right */
+  margin-bottom: 20px; /* Adds space below the button */
+  padding-right: 10px; /* Optional: adds a little padding from the right edge of the container */
+}
+
+.create-btn {
+  background-color: var(--color-blue); /* Uses the blue color variable */
+  color: white;
+  border-radius: 25px; /* Rounded corners */
+  padding: 12px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 500;
+  min-width: 130px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  border: none; 
+}
+
+.create-btn:hover {
+  opacity: 0.9; 
 }
