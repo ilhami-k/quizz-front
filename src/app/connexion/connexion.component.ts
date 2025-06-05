@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service';
 import { UIService } from '../services/ui.service';
 import { Router } from '@angular/router';
 import { RegisterService } from '../services/register.service';
+import { User } from '../models/user.model'; 
 
 @Component({
   selector: 'app-connexion',
@@ -49,12 +50,12 @@ export class ConnexionComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: (response) => {
         if (response && response.user && response.user.userId && response.authToken) {
-          this.authService.setLoggedIn(true, response.authToken);
+          this.authService.setLoggedIn(true, response.authToken, response.user as User);
           this.uiService.showLoginScreen = false;
            this.router.navigate(['/']);
         } else {
           this.errorMessage = 'Erreur de connexion: Réponse invalide du serveur. Structure attendue non conforme.';
-          this.authService.setLoggedIn(false);
+          this.authService.setLoggedIn(false); 
         }
       },
       error: (error) => {
@@ -74,7 +75,7 @@ export class ConnexionComponent implements OnInit {
 
     if (this.connexionForm.invalid) {
         this.errorMessage = "Veuillez remplir correctement tous les champs requis.";
-        this.connexionForm.markAllAsTouched(); 
+        this.connexionForm.markAllAsTouched();
         return;
     }
 
@@ -90,22 +91,21 @@ export class ConnexionComponent implements OnInit {
       username: username,
       email: email,
       password: password,
-      confirmPassword: confPassword 
+      confirmPassword: confPassword
     };
 
     this.registerService.register(userData).subscribe({
       next: (response) => {
         console.log('Inscription réussie !', response);
         this.errorMessage = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
-        this.connexionForm.reset(); 
-        this.switchStates(); 
+        this.connexionForm.reset();
+        this.switchStates();
       },
       error: (error) => {
-        // Gestion des erreurs
         console.error('Erreur lors de l\'inscription :', error);
         if (error.status === 400 && error.error) {
-          this.errorMessage = error.error.message || 'Erreur lors de l\'inscription. Veuillez vérifier vos informations.';
-        } 
+          this.errorMessage = error.error.message || "Erreur lors de l'inscription. Veuillez vérifier vos informations.";
+        }
         else if (error.status === 0) {
           this.errorMessage = "Impossible de se connecter au serveur. Veuillez réessayer plus tard.";
         }
@@ -119,8 +119,7 @@ export class ConnexionComponent implements OnInit {
   switchStates(): void {
     this.isLogin = !this.isLogin;
     this.errorMessage = '';
-    this.connexionForm.reset(); // Réinitialise le formulaire lors du switch
-    // Réinitialise spécifiquement les erreurs de validation si besoin (le reset() devrait suffire)
+    this.connexionForm.reset();
     this.connexionForm.get('username')?.setErrors(null);
     this.connexionForm.get('email')?.setErrors(null);
     this.connexionForm.get('password')?.setErrors(null);

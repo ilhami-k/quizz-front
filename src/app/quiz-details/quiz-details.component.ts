@@ -78,6 +78,16 @@ export class QuizDetailsComponent implements OnInit {
     console.log(`Starting actual quiz for ID: ${quizId}`);
     // this.router.navigate(['/take-quiz', quizId]);
   }
+  getDifficultyString(level: number | undefined): string {
+    if (level === undefined) return 'Unknown';
+    switch (level) {
+      case 0: return 'Easy';
+      case 1: return 'Medium';
+      case 2: return 'Hard';
+      case 3: return 'Expert';
+      default: return 'Unknown';
+    }
+  }
 
   
 
