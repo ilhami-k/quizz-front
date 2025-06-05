@@ -35,16 +35,16 @@ export class QuizCreationComponent implements OnInit {
     { categoryId: 11, name: "Technologie Moderne" },
   ];
 
-  difficultyLevels: string[] = ["Easy", "Medium", "Hard", "Expert"];
+  difficultyLevels: string[] = ["Facile", "Moyen", "Difficile", "Expert"];
 
   questionTypes = [
-    { value: 0, name: "Multiple Choice (Single Correct)" },
-    { value: 1, name: "True/False" }
+    { value: 0, name: "Choix Multiple (Une seule bonne réponse)" },
+    { value: 1, name: "Vrai/Faux" }
   ];
 
   ngOnInit(): void {
     if (!this.authService.isLoggedIn) {
-      this.errorMessage = "You must be logged in to create a quiz. Please log in or register.";
+      this.errorMessage = "Vous devez être connecté pour créer un quiz. Veuillez vous connecter ou vous inscrire.";
     }
 
     this.quizForm = this.fb.group({
@@ -64,7 +64,7 @@ export class QuizCreationComponent implements OnInit {
   createQuestionFormGroup(): FormGroup {
     return this.fb.group({
       questionText: ['', Validators.required],
-      questionType: [1, Validators.required],
+      questionType: [1, Validators.required], 
       timer: [30, [Validators.required, Validators.min(5), Validators.max(300)]],
       answers: this.fb.array([
         this.createAnswerFormGroup(),
@@ -81,7 +81,7 @@ export class QuizCreationComponent implements OnInit {
     if (this.questionsFormArray.length > 1) {
       this.questionsFormArray.removeAt(questionIndex);
     } else {
-      this.errorMessage = "A quiz must have at least one question.";
+      this.errorMessage = "Un quiz doit comporter au moins une question.";
     }
   }
 
@@ -105,7 +105,7 @@ export class QuizCreationComponent implements OnInit {
     if (answers.length < 6) {
         answers.push(this.createAnswerFormGroup());
     } else {
-        this.errorMessage = "Maximum of 6 answers per question.";
+        this.errorMessage = "Maximum de 6 options de réponse par question.";
     }
   }
 
@@ -114,7 +114,7 @@ export class QuizCreationComponent implements OnInit {
     if (answers.length > 2) {
       answers.removeAt(answerIndex);
     } else {
-      this.errorMessage = "A question must have at least two answer options.";
+      this.errorMessage = "Une question doit avoir au moins deux options de réponse.";
     }
   }
 
@@ -123,14 +123,14 @@ export class QuizCreationComponent implements OnInit {
     this.successMessage = null;
 
     if (!this.authService.isLoggedIn) {
-      this.errorMessage = "Authentication error. Please log in again.";
+      this.errorMessage = "Erreur d'authentification. Veuillez vous reconnecter.";
       this.router.navigate(['/connexion']);
       return;
     }
 
     if (this.quizForm.invalid) {
       this.quizForm.markAllAsTouched();
-      this.errorMessage = "Please fill out all required fields correctly. Check the debug info if visible.";
+      this.errorMessage = "Veuillez remplir correctement tous les champs obligatoires.";
       return;
     }
 
@@ -139,11 +139,9 @@ export class QuizCreationComponent implements OnInit {
       const question = questionsValue[i];
       const correctAnswersCount = question.answers.filter((ans: Answer) => ans.isCorrect).length;
       if (correctAnswersCount !== 1) {
-        this.errorMessage = `Question ${i + 1} must have exactly one correct answer.`;
+        this.errorMessage = `La question ${i + 1} doit avoir exactement une bonne réponse.`;
         this.isLoading = false;
         return;
-      }
-      if (question.questionType === 1 && question.answers.length !== 2) {
       }
     }
 
@@ -152,12 +150,12 @@ export class QuizCreationComponent implements OnInit {
 
     let numericDifficulty: number;
     switch (formValue.difficultyLevel) {
-      case "Easy": numericDifficulty = 0; break;
-      case "Medium": numericDifficulty = 1; break;
-      case "Hard": numericDifficulty = 2; break;
+      case "Facile": numericDifficulty = 0; break;
+      case "Moyen": numericDifficulty = 1; break;
+      case "Difficile": numericDifficulty = 2; break;
       case "Expert": numericDifficulty = 3; break;
       default:
-        this.errorMessage = "Invalid difficulty level selected.";
+        this.errorMessage = "Niveau de difficulté sélectionné invalide.";
         this.isLoading = false;
         return;
     }
@@ -165,7 +163,7 @@ export class QuizCreationComponent implements OnInit {
     const loggedInUser = this.authService.getLoggedInUser();
 
     if (!loggedInUser || typeof loggedInUser.userId === 'undefined') {
-        this.errorMessage = "User ID not found. Please ensure you are logged in correctly.";
+        this.errorMessage = "ID utilisateur non trouvé. Veuillez vous assurer que vous êtes correctement connecté.";
         this.isLoading = false;
         return;
     }
@@ -194,7 +192,7 @@ export class QuizCreationComponent implements OnInit {
     this.quizzService.createQuizzes(quizPayloadForBackend as any).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.successMessage = 'Quiz created successfully! Redirecting...';
+        this.successMessage = 'Quiz créé avec succès ! Redirection en cours...';
         console.log('Quiz creation successful:', response);
         this.quizForm.reset({
             difficultyLevel: '',
@@ -214,13 +212,13 @@ export class QuizCreationComponent implements OnInit {
         this.isLoading = false;
         console.error('Quiz creation failed:', err);
         if (err.error && typeof err.error === 'string') {
-            this.errorMessage = `Server Error: ${err.error}`;
+            this.errorMessage = `Erreur Serveur : ${err.error}`;
         } else if (err.error && err.error.message) {
-          this.errorMessage = `Server Error: ${err.error.message}`;
+          this.errorMessage = `Erreur Serveur : ${err.error.message}`;
         } else if (err.statusText && err.status) {
-           this.errorMessage = `Error: ${err.status} - ${err.statusText}.`;
+           this.errorMessage = `Erreur : ${err.status} - ${err.statusText}.`;
         } else {
-          this.errorMessage = 'An unexpected error occurred during quiz creation.';
+          this.errorMessage = 'Une erreur inattendue s\'est produite lors de la création du quiz.';
         }
       }
     });
