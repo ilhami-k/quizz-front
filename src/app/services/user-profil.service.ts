@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';  
-
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model'; // Assurez-vous que le chemin est correct
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfilService {
- 
-  constructor() { }
   private http: HttpClient = inject(HttpClient);
-  private apiUrl = 'https://localhost:7223/users/';
+  // Ajustez cette URL si votre endpoint pour récupérer un utilisateur par ID est différent.
+  // Supposant une cohérence avec AuthService et QuizzService.
+  private apiUrl = 'http://4.180.236.182:5000/users';
 
-  getUserbyId(id: number) :Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  constructor() { }
 
-}
+  getUserbyId(id: number): Observable<User> { // Type de retour modifié en Observable<User>
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
 }

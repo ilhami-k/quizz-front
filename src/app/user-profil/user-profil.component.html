@@ -1,9 +1,20 @@
+<div class="user-profile-container"> <div *ngIf="isLoading" class="loading-indicator">
+    <p>Chargement du profil...</p>
+  </div>
 
-  <h1>Détails de l'utilisateur</h1>
-  <ul>
-    <li><strong>ID :</strong>{{ user.id }}</li>
-    <li><strong>Nom :</strong> {{ user.name }}</li>
-    <li><strong>Email :</strong> {{ user.email }}</li>
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    <p>{{ errorMessage }}</p>
+    </div>
 
-  </ul>
+  <div *ngIf="user && !isLoading && !errorMessage">
+    <h1>Détails de l'utilisateur</h1>
+    <ul>
+      <li><strong>Nom :</strong> {{ user.username }}</li>
+      <li><strong>Email :</strong> {{ user.email }}</li>
+    </ul>
+  </div>
 
+  <div *ngIf="!user && !isLoading && !errorMessage">
+    <p>Aucune donnée utilisateur à afficher. Veuillez vous connecter pour voir votre profil.</p>
+  </div>
+</div>
