@@ -1,0 +1,78 @@
+.user-profile-container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 30px;
+  background: linear-gradient(to bottom right, #fdfdfd, #f0f4f8);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  color: #2c3e50;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  color: #34495e;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  width: 80px;
+  height: 3px;
+  background: #3498db;
+  display: block;
+  margin: 8px auto 0;
+  border-radius: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 14px 0;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #ccc;
+  transition: background 0.2s ease-in-out;
+}
+
+li:hover {
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+strong {
+  font-weight: 600;
+  color: #2980b9;
+}
+
+.loading-indicator,
+.error-message {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.loading-indicator {
+  background: #e8f4fd;
+  color: #3498db;
+  border-left: 5px solid #3498db;
+  animation: pulse 1s infinite;
+}
+
+.error-message {
+  background: #ffe6e6;
+  color: #e74c3c;
+  border-left: 5px solid #e74c3c;
+}
+
