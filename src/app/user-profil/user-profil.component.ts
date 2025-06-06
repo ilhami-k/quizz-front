@@ -2,18 +2,18 @@ import { Component, OnInit, inject } from '@angular/core'; // OnInit injecté
 import { UserProfilService } from '../services/user-profil.service';
 import { CommonModule } from '@angular/common';
 import { User } from '../models/user.model';
-import { AuthService } from '../services/auth.service'; // AuthService importé
+import { AuthService } from '../services/auth.service'; 
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profil',
-  standalone: true, // Assurez-vous que c'est le cas ou ajustez selon votre structure (NgModule)
-  imports: [CommonModule, FormsModule], // CommonModule est nécessaire pour *ngIf, etc.
+  standalone: true,
+  imports: [CommonModule, FormsModule], 
   templateUrl: './user-profil.component.html',
-  styleUrls: ['./user-profil.component.css'] // Assurez-vous que ce fichier existe
+  styleUrls: ['./user-profil.component.css'] 
 })
 export class UserProfilComponent implements OnInit {
-  user: User | null = null; // Modifié pour un seul utilisateur ou null
+  user: User | null = null; 
   isLoading: boolean = false;
   errorMessage: string | null = null;
 
