@@ -1,22 +1,20 @@
-<div class="container">
-    
-  <div class="profile-view">
-    <h3>Profil Utilisateur</h3>
-    <p>Nom : {{ user.name }}</p>
-    <p>Email : {{ user.email }}</p>
+<div class="user-profile-container"> <div *ngIf="isLoading" class="loading-indicator">
+    <p>Chargement du profil...</p>
   </div>
 
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    <p>{{ errorMessage }}</p>
+    </div>
 
-  <div class="profile-edit">
-    <h3>Modifier le profil</h3>
-    <form (ngSubmit)="saveChanges()">
-      <label>Nom</label>
-      <input type="text" [(ngModel)]="editedUser.name" name="name" />
+  <div *ngIf="user && !isLoading && !errorMessage">
+    <h1>Profil de l'utilisateur</h1>
+    <ul>
+      <li><strong>Nom :</strong> {{ user.username }}</li>
+      <li><strong>Email :</strong> {{ user.email }}</li>
+    </ul>
+  </div>
 
-      <label>Email</label>
-      <input type="email" [(ngModel)]="editedUser.email" name="email" />
-
-      <button type="submit">Enregistrer</button>
-    </form>
+  <div *ngIf="!user && !isLoading && !errorMessage">
+    <p>Aucune donnée utilisateur à afficher. Veuillez vous connecter pour voir votre profil.</p>
   </div>
 </div>
