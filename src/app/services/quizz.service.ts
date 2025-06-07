@@ -27,4 +27,7 @@ export class QuizzService {
     }
     return this.http.post<any>(`${this.apiUrl}/create`,quizData, {headers:headers});
   }
+  getQuizzesByCategoryId(categoryId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/category/${categoryId}`);
+  }
 }
