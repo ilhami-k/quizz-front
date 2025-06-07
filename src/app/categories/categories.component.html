@@ -1,44 +1,11 @@
-<section class= 'hero'>
+<section class="hero">
     <div class="features">
-        <div class="feature">
-            <div class="feature-icon">🌐</div>
-            <h2 class="feature-title">Culture Générale</h2>
-            <p class="feature-description">Testez vos connaissances sur différents sujets</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">💡</div>
-            <h2 class="feature-title">Sciences</h2>
-            <p class="feature-description">Questions de physique, chimie et biologie</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🖥️</div>
-            <h2 class="feature-title">Technologies</h2>
-            <p class="feature-description">Informatique et innovations technologiques</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🎬</div>
-            <h2 class="feature-title">Cinéma</h2>
-            <p class="feature-description">Testez vos connaissances cinématographiques</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🏆</div>
-            <h2 class="feature-title">Sport</h2>
-            <p class="feature-description">Épreuves sportives et histoire du sport</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🌍</div>
-            <h2 class="feature-title">Géographie</h2>
-            <p class="feature-description">Pays, capitales et cultures du monde</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">📚</div>
-            <h2 class="feature-title">Littérature</h2>
-            <p class="feature-description">Auteurs, œuvres et mouvements littéraires</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🎨</div>
-            <h2 class="feature-title">Art</h2>
-            <p class="feature-description">Histoire de l'art et grands artistes</p>
+        <div class="feature" *ngFor="let category of categories" (click)="viewQuizzesByCategory(category.categoryId)">
+            <div class="feature-icon">
+                ?    
+            </div>
+            <h2 class="feature-title">{{ category.name }}</h2>
+            <p class="feature-description">Aucune description disponible</p>
         </div>
     </div>
 </section>
