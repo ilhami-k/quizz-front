@@ -1,11 +1,38 @@
 <section class="hero">
-    <div class="features">
-        <div class="feature" *ngFor="let category of categories" (click)="viewQuizzesByCategory(category.categoryId)">
-            <div class="feature-icon">
-                ?    
-            </div>
-            <h2 class="feature-title">{{ category.name }}</h2>
-            <p class="feature-description">Aucune description disponible</p>
-        </div>
+  <div class="features">
+    <div
+      class="feature"
+      *ngFor="let category of categories"
+      (click)="viewQuizzesByCategory(category.categoryId)"
+    >
+      <div class="feature-icon">
+        <ng-container [ngSwitch]="category?.name">
+          <span *ngSwitchCase="'Animaux'">🐾</span>
+          <span *ngSwitchCase="'Art'">🎨</span>
+          <span *ngSwitchCase="'Capitales Mondiales'">🌍</span>
+          <span *ngSwitchCase="'Cuisine'">🍴</span>
+          <span *ngSwitchCase="'Culture Générale'">📚</span>
+          <span *ngSwitchCase="'Exploration Spatiale'">🚀</span>
+          <span *ngSwitchCase="'Films'">🎬</span>
+          <span *ngSwitchCase="'Géographie'">🗺️</span>
+          <span *ngSwitchCase="'Histoire'">🏺</span>
+          <span *ngSwitchCase="'Inventions Célèbres'">💡</span>
+          <span *ngSwitchCase="'Littérature'">📖</span>
+          <span *ngSwitchCase="'Mathématiques'">➗</span>
+          <span *ngSwitchCase="'Musique'">🎵</span>
+          <span *ngSwitchCase="'Mythologie'">🧙‍♂️</span>
+          <span *ngSwitchCase="'Nature'">🌿</span>
+          <span *ngSwitchCase="'Politique'">🏛️</span>
+          <span *ngSwitchCase="'Programmation'">💻</span>
+          <span *ngSwitchCase="'Science'">🔬</span>
+          <span *ngSwitchCase="'Sports'">⚽</span>
+          <span *ngSwitchCase="'Technologie'">🤖</span>
+          <!-- Icône par défaut si catégorie non listée -->
+          <span *ngSwitchDefault title="Catégorie inconnue">❓</span>
+        </ng-container>
+      </div>
+      <h2 class="feature-title">{{ category.name }}</h2>
+      <p class="feature-description">Aucune description disponible</p>
     </div>
+  </div>
 </section>
