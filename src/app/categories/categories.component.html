@@ -1,10 +1,6 @@
 <section class="hero">
   <div class="features">
-    <div
-      class="feature"
-      *ngFor="let category of categories"
-      (click)="viewQuizzesByCategory(category.categoryId)"
-    >
+    <div class="feature" *ngFor="let category of categories" (click)="viewQuizzesByCategory(category.categoryId)">
       <div class="feature-icon">
         <ng-container [ngSwitch]="category?.name">
           <span *ngSwitchCase="'Animaux'">🐾</span>
@@ -27,7 +23,6 @@
           <span *ngSwitchCase="'Science'">🔬</span>
           <span *ngSwitchCase="'Sports'">⚽</span>
           <span *ngSwitchCase="'Technologie'">🤖</span>
-          <!-- Icône par défaut si catégorie non listée -->
           <span *ngSwitchDefault title="Catégorie inconnue">❓</span>
         </ng-container>
       </div>
