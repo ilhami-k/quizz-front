@@ -7,7 +7,6 @@ import { ConnexionComponent } from './connexion/connexion.component';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 import { UserProfilComponent } from './user-profil/user-profil.component';
 import { QuizCreationComponent } from './quiz-creation/quiz-creation.component'; 
-import { QuizByCategoryComponent } from './quiz-by-category/quiz-by-category.component';
 import { QuizParticipationComponent } from './quiz-participation/quiz-participation.component';
 
 export const routes: Routes = [
@@ -20,5 +19,5 @@ export const routes: Routes = [
     { path: 'resultat', component: ResultatComponent },
     { path: 'connexion', component: ConnexionComponent },
     { path: 'profil', component: UserProfilComponent },
-    { path: 'quiz/category/:id', component: QuizByCategoryComponent }
+    { path: 'quiz/category/:id', component: QuizComponent }
 ];
