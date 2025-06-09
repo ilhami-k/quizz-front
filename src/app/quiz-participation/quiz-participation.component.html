@@ -1,0 +1,53 @@
+<div class="quiz-take-container">
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Loading Quiz...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="quiz && !isLoading && !error && !quizFinished">
+    <div *ngIf="currentQuestion as question">
+      <div class="question-header">
+        <p class="question-counter">Question {{ currentQuestionIndex + 1 }} of {{ quiz.questions?.length }}</p>
+        <h2 class="question-text">{{ question.questionText }}</h2>
+      </div>
+
+      <ul class="answers-list">
+        <li *ngFor="let answer of question.answers"
+            class="answer-option"
+            [class.selected]="answer.answerId === selectedAnswerId"
+            (click)="selectAnswer(answer.answerId)">
+          {{ answer.answerText }}
+        </li>
+      </ul>
+
+      <div class="quiz-navigation">
+        <button class="btn btn-next" (click)="nextQuestion()" [disabled]="selectedAnswerId === null">
+          {{ isLastQuestion() ? 'Finish Quiz' : 'Next Question' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="quizFinished" class="quiz-finished-container">
+    
+    <div *ngIf="finalScore === null && !submissionError">
+      <h2>Quiz Finished!</h2>
+      <p>Calculating your score...</p>
+    </div>
+
+    <div *ngIf="submissionError" class="error-message">
+       <p>{{ submissionError }}</p>
+    </div>
+
+    <div *ngIf="finalScore !== null" class="results-display">
+      <h2>Your Results</h2>
+      <p class="score">You Scored: {{ finalScore }} / {{ totalQuestions }}</p>
+      <p class="message">{{ resultMessage }}</p>
+      <button class="btn" (click)="goBackToQuizzes()">Back to Quizzes</button>
+    </div>
+
+  </div>
+</div>
