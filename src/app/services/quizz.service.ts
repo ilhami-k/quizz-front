@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject } from '@angular/core';
 import { Quiz } from '../models/quiz.model';
+import { QuizSubmission } from '../models/quiz-participation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,14 @@ export class QuizzService {
   }
   getQuizzesByCategoryId(categoryId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/category/${categoryId}`);
+  }
+  submitQuiz(submission: QuizSubmission): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` })
+    });
+    // The endpoint from your curl command
+    return this.http.post(`${this.apiUrl}/submit`, submission, { headers });
   }
 }

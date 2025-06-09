@@ -74,9 +74,11 @@ export class QuizDetailsComponent implements OnInit {
 
   }
   startActualQuiz(quizId: number | undefined): void {
-    if (!quizId) return;
-    console.log(`Starting actual quiz for ID: ${quizId}`);
-    // this.router.navigate(['/take-quiz', quizId]);
+    if (!quizId) {
+      this.error = "Cannot start the quiz, its ID is missing.";
+      return;
+    }
+    this.router.navigate(['/quiz/take', quizId]);
   }
   getDifficultyString(level: number | undefined): string {
     if (level === undefined) return 'Unknown';
