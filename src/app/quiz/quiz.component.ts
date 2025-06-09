@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; 
+import { Router, ActivatedRoute } from '@angular/router'; 
 import { QuizzService } from '../services/quizz.service';
 import { Quiz } from '../models/quiz.model';
 
@@ -14,13 +14,24 @@ import { Quiz } from '../models/quiz.model';
 export class QuizComponent implements OnInit {
   private quizzService = inject(QuizzService);
   private router = inject(Router); 
-
+  private route = inject(ActivatedRoute);
   quizzes: Quiz[] = [];
+  categoryId: number | null = null;
   isLoading: boolean = true;
   error: string | null = null;
+  categoryName: string | null = null;
 
   ngOnInit(): void {
-    this.loadQuizzes();
+    this.route.paramMap.subscribe(params => {
+    const idParam = params.get('id'); 
+    this.categoryId = idParam ? Number(idParam) : null;
+
+    if (this.categoryId !== null) {
+      this.loadQuizzesByCategory();
+      } 
+    else {
+      this.loadQuizzes();}
+    });
   }
 
   loadQuizzes(): void {
@@ -43,6 +54,29 @@ export class QuizComponent implements OnInit {
       }
     });
   }
+
+loadQuizzesByCategory(): void {
+  this.isLoading = true;
+  this.error = null;
+
+  this.quizzService.getQuizzesByCategoryId(this.categoryId!).subscribe({
+    next: (quizzes) => {
+      this.quizzes = quizzes;
+      this.isLoading = false;
+
+        if (quizzes.length > 0 && quizzes[0].category?.name) {
+          this.categoryName = quizzes[0].category.name;
+        } else {
+          this.categoryName = 'Catégorie inconnue';
+        }
+    },
+    error: (err) => {
+      console.error('Error loading quizzes:', err);
+      this.error = 'Erreur lors du chargement des quiz.';
+      this.isLoading = false;
+    }
+  });
+}
 
   viewQuizDetails(quizId: number): void {
     console.log('Attempting to navigate to details for quizId:', quizId);
