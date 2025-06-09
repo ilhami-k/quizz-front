@@ -1,17 +1,56 @@
-<div class="user-profile-container"> <div *ngIf="isLoading" class="loading-indicator">
-    <p>Chargement du profil...</p>
+<div class="user-profile-container">
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Chargement en cours...</p>
   </div>
 
   <div *ngIf="errorMessage && !isLoading" class="error-message">
     <p>{{ errorMessage }}</p>
-    </div>
+  </div>
+  
+  <div *ngIf="successMessage && !isLoading" class="success-message">
+    <p>{{ successMessage }}</p>
+  </div>
 
   <div *ngIf="user && !isLoading && !errorMessage">
     <h1>Profil de l'utilisateur</h1>
-    <ul>
-      <li><strong>Nom :</strong> {{ user.username }}</li>
-      <li><strong>Email :</strong> {{ user.email }}</li>
-    </ul>
+
+    <div *ngIf="!isEditing">
+      <ul>
+        <li><strong>Nom :</strong> {{ user.username }}</li>
+        <li><strong>Email :</strong> {{ user.email }}</li>
+      </ul>
+      <div class="form-actions">
+        <button (click)="toggleEditMode()" class="btn btn-edit">Modifier le profil</button>
+      </div>
+    </div>
+
+    <div *ngIf="isEditing">
+      <form [formGroup]="userForm" (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label for="username">Nom d'utilisateur</label>
+          <input type="text" id="username" formControlName="username" class="form-control" placeholder="Entrez votre nom d'utilisateur">
+          <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched" class="validation-error">
+            Un nom d'utilisateur est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control" placeholder="Entrez votre email">
+          <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="validation-error">
+             <span *ngIf="userForm.get('email')?.errors?.['required']">L'email est requis.</span>
+             <span *ngIf="userForm.get('email')?.errors?.['email']">Format d'email invalide.</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="userForm.invalid || isLoading" class="btn btn-save">
+            {{ isLoading ? 'Sauvegarde...' : 'Sauvegarder' }} 
+          </button>
+          <button type="button" (click)="toggleEditMode()" class="btn btn-cancel">Annuler</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <div *ngIf="!user && !isLoading && !errorMessage">

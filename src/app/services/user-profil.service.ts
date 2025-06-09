@@ -17,4 +17,8 @@ export class UserProfilService {
   getUserbyId(id: number): Observable<User> { // Type de retour modifié en Observable<User>
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
+
+  updateUser(id: number, userData: Partial<User>): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}`, userData)
+}
 }
