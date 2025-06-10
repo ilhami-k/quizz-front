@@ -17,4 +17,14 @@ export class UserProfilService {
   getUserbyId(id: number): Observable<User> { // Type de retour modifié en Observable<User>
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
+
+  UpdateUser(id: number, userData: Partial<User>): Observable<any> {
+  return this.http.put(`${this.apiUrl}/update/${id}`, userData)
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete/${id}`);
+  }
+
+
 }
