@@ -56,4 +56,9 @@
   <div *ngIf="!user && !isLoading && !errorMessage">
     <p>Aucune donnée utilisateur à afficher. Veuillez vous connecter pour voir votre profil.</p>
   </div>
+
+
+<div class="mt-3">
+ <button class="btn btn-danger" (click)="deleteProfile()">Supprimer mon profil</button>
+</div>
 </div>

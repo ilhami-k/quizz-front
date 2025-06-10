@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service'; 
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class UserProfilComponent implements OnInit {
   constructor(
     private userProfilService: UserProfilService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -71,7 +73,7 @@ export class UserProfilComponent implements OnInit {
     this.errorMessage = null; 
     this.successMessage = null;
 
-    if (!this.isEditing && this.user) {
+    if (this.isEditing && this.user) {
       this.userForm.patchValue({
         username: this.user.username,
         email: this.user.email
@@ -89,11 +91,19 @@ export class UserProfilComponent implements OnInit {
     this.errorMessage = null;
     this.successMessage = null;
     
-    const updatedData = this.userForm.value;
+    const updatedData = {
+      userId : this.user.userId,
+      username: this.userForm.value.username,
+      email: this.userForm.value.email
+    }
+    
 
-    this.userProfilService.updateUser(this.user.userId, updatedData).subscribe({
-      next: () => {
-        this.user = { ...this.user, ...updatedData };
+    /*const userIdAsNumber = Number(this.user.userId);*/
+
+    this.userProfilService.UpdateUser(this.user.userId, updatedData).subscribe({
+      next: (reponse) => {
+        this.user = reponse;
+
         const currentUser = this.authService.getLoggedInUser();
         if (currentUser) {
             const updatedUserForAuth = { ...currentUser, ...updatedData };
@@ -105,6 +115,8 @@ export class UserProfilComponent implements OnInit {
         this.isEditing = false;
         this.successMessage = "Profil mis à jour avec succès !";
       },
+
+      
       error: (err) => {
         console.error("Erreur lors de la mise à jour du profil:", err);
         this.errorMessage = "La mise à jour a échoué. Veuillez réessayer.";
@@ -113,4 +125,21 @@ export class UserProfilComponent implements OnInit {
     });
   }
 
-}
+  deleteProfile(): void {
+    const isconfirmed = confirm("Êtes-vous sûr de vouloir supprimer votre compte ?");
+    if (isconfirmed && this.user){
+      this.userProfilService.deleteUser(this.user.userId).subscribe({
+        next: () => {
+          alert("Votre compte a été supprimé avec succès.");
+          this.authService.logout();
+          this.router.navigate(['/']);
+          
+    },
+    error: (err) => {
+          console.error("Erreur lors de la suppression du profil:", err);
+          alert("La suppression du compte a échoué.");
+        }
+      });
+    }
+  }
+} 
