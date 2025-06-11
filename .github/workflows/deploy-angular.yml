@@ -30,6 +30,6 @@ jobs:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
-        source: "dist/quizz-front/" # IMPORTANT: Verify this is your build output folder
+        source: "dist/projet-quiz/" # IMPORTANT: Verify this is your build output folder
         target: "/var/www/html"
         strip_components: 2
