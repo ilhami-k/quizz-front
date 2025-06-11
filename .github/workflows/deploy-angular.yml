@@ -24,12 +24,15 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production
 
-    - name: Deploy to Azure VM
+    - name: Deploy to Azure VM and Set Permissions
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
-        source: "dist/projet-quiz/" # IMPORTANT: Verify this is your build output folder
+        source: "dist/quizz-front/browser/*" # This assumes your build output is in 'dist/quizz-front/browser'
         target: "/var/www/html"
-        strip_components: 2
+        overwrite: true
+        script_after: |
+          sudo chown -R www-data:www-data /var/www/html
+          sudo chmod -R 755 /var/www/html
