@@ -53,3 +53,4 @@ jobs:
 
           # Clean up the temporary release files
           rm -rf /tmp/quizz-release
+          
