@@ -25,25 +25,36 @@ jobs:
       run: npm run build -- --configuration production
 
     - name: Create deployment package
-      # This creates a compressed archive of the built files
+      # This creates a compressed archive of all the built files
       run: tar -czvf deploy.tar.gz -C dist/projet-quiz/browser .
 
-    - name: Upload and Unpack on VM
-      # This uses a single, reliable SSH session to deploy and set permissions
+    - name: Upload package to the VM
+      # This step securely copies the archive from the runner to your server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.AZURE_VM_IP }}
+        username: ${{ secrets.AZURE_VM_USER }}
+        key: ${{ secrets.AZURE_VM_SSH_KEY }}
+        source: "deploy.tar.gz"
+        target: "/tmp"
+
+    - name: Unpack package and set permissions on the VM
+      # This step runs commands on your server to unpack the archive and fix permissions
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
         script: |
-          # Use scp to copy the single archive file to a temporary location on the VM
-          scp -o StrictHostKeyChecking=no deploy.tar.gz ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }}:/tmp/deploy.tar.gz
+          # Go to the web root and remove old files
+          cd /var/www/html
+          sudo rm -rf ./*
 
-          # Unpack the archive into the webroot, overwriting old files
+          # Unpack the new release from the /tmp directory
           sudo tar -xzvf /tmp/deploy.tar.gz -C /var/www/html/
-
-          # Set the correct ownership and permissions
+          
+          # Set the correct ownership for Nginx
           sudo chown -R www-data:www-data /var/www/html
-
-          # Clean up the uploaded archive from the temporary directory
+          
+          # Clean up the uploaded archive
           rm /tmp/deploy.tar.gz
