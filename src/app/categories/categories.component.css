@@ -28,7 +28,7 @@
 .feature-icon {
     font-size: 48px;
     margin-bottom: 15px;
-    color: #7c3aed var(--color-violet);
+    color: var(--color-violet);
 }
 
 .feature-title {
@@ -36,9 +36,6 @@
     font-size: 20px;
 }
 
-.feature-description {
-    color: var(--color-gray);
-}
 .hero {
     text-align: center;
     padding: 80px 0;
