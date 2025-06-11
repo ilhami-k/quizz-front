@@ -25,32 +25,25 @@ jobs:
       run: npm run build -- --configuration production
 
     - name: Create deployment package
-      run: |
-        mkdir release
-        cd dist/projet-quiz/browser
-        tar -czvf ../../../release/deploy.tar.gz .
+      # This creates a compressed archive of the built files
+      run: tar -czvf deploy.tar.gz -C dist/projet-quiz/browser .
 
-    - name: Deploy to Azure VM
+    - name: Upload and Unpack on VM
+      # This uses a single, reliable SSH session to deploy and set permissions
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
         script: |
-          # Create a temporary directory for the new release
-          mkdir -p /tmp/quizz-release
+          # Use scp to copy the single archive file to a temporary location on the VM
+          scp -o StrictHostKeyChecking=no deploy.tar.gz ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }}:/tmp/deploy.tar.gz
 
-          # Upload the packaged release file
-          # Note: This uses the ssh-action's built-in scp functionality
-          scp -o StrictHostKeyChecking=no -r release/deploy.tar.gz ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }}:/tmp/quizz-release/
+          # Unpack the archive into the webroot, overwriting old files
+          sudo tar -xzvf /tmp/deploy.tar.gz -C /var/www/html/
 
-          # Unpack the release and set permissions
-          cd /var/www/html
-          sudo rm -rf ./*
-          sudo tar -xzvf /tmp/quizz-release/deploy.tar.gz -C .
+          # Set the correct ownership and permissions
           sudo chown -R www-data:www-data /var/www/html
-          sudo chmod -R 755 /var/www/html
 
-          # Clean up the temporary release files
-          rm -rf /tmp/quizz-release
-          
+          # Clean up the uploaded archive from the temporary directory
+          rm /tmp/deploy.tar.gz
