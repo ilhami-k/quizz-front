@@ -24,21 +24,16 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production
 
-    # STEP 1 (DEBUG): This will show us the correct path
-    - name: List the contents of the dist folder
-      run: ls -R dist
-
     - name: Deploy files to VM
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
-        source: "dist/quizz-front/browser/*"  # <-- We will likely change this path
+        source: "dist/projet-quiz/browser/*" # <-- This path is now correct
         target: "/var/www/html"
         overwrite: true
 
-    # STEP 2 (FIX): This step now correctly sets permissions
     - name: Set permissions on VM
       uses: appleboy/ssh-action@master
       with:
