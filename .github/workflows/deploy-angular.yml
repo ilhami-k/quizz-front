@@ -24,22 +24,32 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production
 
-    - name: Deploy files to VM
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.AZURE_VM_IP }}
-        username: ${{ secrets.AZURE_VM_USER }}
-        key: ${{ secrets.AZURE_VM_SSH_KEY }}
-        source: "dist/projet-quiz/browser/*" # <-- This path is now correct
-        target: "/var/www/html"
-        overwrite: true
+    - name: Create deployment package
+      run: |
+        mkdir release
+        cd dist/projet-quiz/browser
+        tar -czvf ../../../release/deploy.tar.gz .
 
-    - name: Set permissions on VM
+    - name: Deploy to Azure VM
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
         script: |
+          # Create a temporary directory for the new release
+          mkdir -p /tmp/quizz-release
+
+          # Upload the packaged release file
+          # Note: This uses the ssh-action's built-in scp functionality
+          scp -o StrictHostKeyChecking=no -r release/deploy.tar.gz ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }}:/tmp/quizz-release/
+
+          # Unpack the release and set permissions
+          cd /var/www/html
+          sudo rm -rf ./*
+          sudo tar -xzvf /tmp/quizz-release/deploy.tar.gz -C .
           sudo chown -R www-data:www-data /var/www/html
           sudo chmod -R 755 /var/www/html
+
+          # Clean up the temporary release files
+          rm -rf /tmp/quizz-release
