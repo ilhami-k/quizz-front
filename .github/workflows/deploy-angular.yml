@@ -6,17 +6,17 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18' # Or the version your project uses
+        node-version: '18'
 
     - name: Install dependencies
       run: npm install
@@ -24,27 +24,12 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: angular-app
-        path: dist/quizz-front # Make sure this path matches your Angular build output directory
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: angular-app
-
     - name: Deploy to Azure VM
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.AZURE_VM_IP }}
         username: ${{ secrets.AZURE_VM_USER }}
         key: ${{ secrets.AZURE_VM_SSH_KEY }}
-        source: "."
+        source: "dist/quizz-front/" # IMPORTANT: Verify this is your build output folder
         target: "/var/www/html"
+        strip_components: 2
