@@ -3,15 +3,12 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-
-    margin-left:150px;
-    margin-right:150px;
+    padding: 0 30px;
 }
 
 .feature {
     text-align: center;
     background-color: white;
-    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 6px var(--color-shadow-light);
     width: calc(25% - 30px);

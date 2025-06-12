@@ -12,7 +12,6 @@
   </div>
 
   <div *ngIf="!authService.isLoggedIn && !isLoading && !successMessage" class="login-prompt">
-      <p>Vous devez être connecté pour créer un quiz.</p>
       <a routerLink="/connexion" class="btn btn-primary">Connexion ou Inscription</a>
   </div>
 
