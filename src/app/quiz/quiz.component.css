@@ -114,8 +114,8 @@
 }
 
 .create-btn {
-  background-color: var(--color-blue); /* Uses the blue color variable */
-  color: white;
+  background-color: var(--color-violet); /* Uses the blue color variable */
+  color: var(--color-white);
   border-radius: 25px; /* Rounded corners */
   padding: 12px 20px;
   display: inline-flex;

@@ -1,167 +1,186 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px); /* Adjust based on navbar/footer height */
+  padding: 40px 0;
+}
+
+/* Glassmorphism Container */
+.login-container {
+  width: 420px;
+  max-width: 95%;
+  padding: 40px 35px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 var(--color-shadow-medium);
+  animation: slideDown 0.6s ease-out forwards;
+  overflow: hidden;
+}
+
+/* Mode Switcher (Modern Tabs) */
 .mode-switcher {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--color-shadow-light);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 25px;
+  margin-bottom: 25px;
+  padding: 4px;
 }
 
 .mode-switcher button {
-  padding: 10px 20px;
+  flex: 1;
+  padding: 10px 15px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--color-gray);
-  border-bottom: 3px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.mode-switcher button:hover {
-  color: var(--color-black);
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
 .mode-switcher button.active {
+  background-color: var(--color-white);
   color: var(--color-violet);
-  border-bottom-color: var(--color-violet);
-  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .mode-switcher button:disabled {
-  color: var(--color-gray);
   cursor: not-allowed;
-  opacity: 0.7;
-}
-
-form {
-  transition: opacity 0.4s ease-in-out;
-}
-
-.form-enter {
-  opacity: 0;
-}
-.form-enter-active {
-  opacity: 1;
-  transition: opacity 0.4s ease-in-out;
-}
-.form-leave {
   opacity: 1;
 }
-.form-leave-active {
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 20px;
 }
 
-.login-container {
-  width: 450px;
-  max-width: 90%;
-  margin: 100px auto;
-  padding: 25px;
-  border: 1px solid var(--color-shadow-light);
-  border-radius: 5px;
-  animation: slideDown 0.5s ease-out forwards;
-}
-
+/* Form inputs */
 .form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+  margin-bottom: 18px;
+  position: relative;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 10px;
-  border: 1px solid var(--color-shadow-light);
-  border-radius: 4px;
+  padding: 14px 18px;
+  background-color: rgba(243, 244, 246, 0.9);
+  border: 1px solid transparent;
+  border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
+  color: var(--color-text-dark);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+input::placeholder {
+    color: #9ca3af;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-violet);
+  box-shadow: 0 0 0 3px var(--color-primary-shadow);
+}
+
+/* Validation styles */
+input.ng-invalid.ng-touched {
+  border-color: var(--color-error);
+}
+
+input.ng-invalid.ng-touched:focus {
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+}
+
+.error-field {
+    color: var(--color-error);
+    font-size: 0.85em;
+    padding-left: 5px;
+    margin-top: 5px;
+}
+
+/* Submit Button */
 button[type="submit"] {
   width: 100%;
-  padding: 10px;
-  background-color: var(--color-violet);
+  padding: 14px;
+  background: linear-gradient(90deg, var(--color-violet) 0%, var(--color-blue) 100%);
   color: var(--color-white);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 5px 15px var(--color-primary-shadow);
+  transform: translateY(-2px);
 }
 
 button:disabled {
-  background-color: var(--color-gray);
+  background: var(--color-gray);
   cursor: not-allowed;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
+/* General Error Message */
 .error-message {
   color: var(--color-error);
   margin-top: 15px;
   text-align: center;
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 6px;
 }
 
+/* The "Sliding Window" animation you wanted to keep */
+.signup-fields {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.signup-fields.active {
+  max-height: 100px;
+  opacity: 1;
+}
+
+/* Initial container animation */
 @keyframes slideDown {
     from {
       opacity: 0;
-      transform: translateY(-30px);
+      transform: translateY(-40px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
 }
-.signup-fields {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: max-height 0.4s ease-in-out,
-              opacity 0.3s ease-in-out,
-              transform 0.3s ease-in-out,
-              margin-top 0.4s ease-in-out,
-              margin-bottom 0.4s ease-in-out;
-  margin-top: 0;
-  margin-bottom: 0;
+
+/* Hide original labels */
+label {
+  display: none;
 }
 
-.signup-fields.active {
-  max-height: 200px;
-  opacity: 1;
-  transform: translateY(0);
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.signup-fields .form-group {
-    margin-bottom: 15px;
-}
-
-.signup-fields .form-group:last-child {
-    margin-bottom: 0;
-}
-
-.error-field {
-    color: var(--color-error, #dc3545);
-    font-size: 0.8em;
-    margin-top: 4px;
-}
-
-input.ng-invalid.ng-touched {
-     border-color: var(--color-error, #dc3545);
-}
-
-input.ng-invalid[formControlName="confPassword"] {
-      border-color: var(--color-error)
-}
-.title {
-  display:flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  color: var(--color-violet);
+@media (max-width: 480px) {
+  .login-container {
+    width: 95%;
+    padding: 25px 20px;
+    margin: 20px auto;
+  }
 }

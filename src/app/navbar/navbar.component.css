@@ -1,77 +1,154 @@
+/* === BASE NAVBAR STYLES === */
 .navbar {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 12px 30px;
+  background-color: var(--color-white);
+  border-radius: 50px;
+  box-shadow: 0 8px 25px var(--color-shadow-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
-  animation: slideIn 0.7s ease;
-  padding-top: 30px;
+  position: relative; /* Crucial for positioning the mobile menu */
+  z-index: 100;
 }
 
 .logo {
   color: var(--color-violet);
   font-size: 24px;
   font-weight: bold;
-  transition: transform 0.3s ease;
   cursor: pointer;
-  padding-left: 2%;
+  transition: transform 0.3s ease;
 }
 
 .logo:hover {
-  transform: scale(1.10);
+  transform: scale(1.05);
 }
 
-.nav-links {
+/* === DESKTOP NAVIGATION === */
+.nav-links-container {
   display: flex;
-  justify-content: space-between;
-  width: 60%;
-  gap: 20px;
-  padding-right: 2%;
+  align-items: center;
+  gap: 30px;
 }
 
-.nav-links a {
+.nav-links-container a {
   text-decoration: none;
-  color: #333;
+  color: var(--color-black);
   font-weight: 500;
   transition: color 0.3s ease;
   cursor: pointer;
 }
 
-.nav-links a:hover {
+.nav-links-container a:hover {
   color: var(--color-violet);
 }
-.connexion {
-background-color: var(--color-blue);
-border-radius: 20px;
-min-width:90px;
-min-height: 35px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-padding: 10px 15px;
-}
-.navbar .nav-links a.connexion {
-  color: white;
-}
-.navbar .nav-links .connexion:hover {
-  opacity: 90%;
-}
-.navbar .nav-links a.tableau-de-bord-btn {
-background-color: var(--color-blue);
-color: white;
-border-radius: 25px;
-padding: 12px 20px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-text-decoration: none;
-font-weight: 500;
-min-width: 130px;
-transition: background-color 0.3s ease, opacity 0.3s ease;
-user-select: none;
+
+/* Reverted button styles to the initial blue background */
+a.connexion,
+a.tableau-de-bord-btn {
+  background-color: var(--color-violet);
+  color: var(--color-white) !important; /* Ensure text is always white */
+  border-radius: 25px;
+  padding: 9px 22px;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.navbar .nav-links a.tableau-de-bord-btn:hover {
-background-color: var(--color-blue);
-opacity: 0.9;
-color: white;
+a.connexion:hover,
+a.tableau-de-bord-btn:hover {
+  opacity: 0.9;
+  color: var(--color-white) !important;
+  transform: translateY(-2px);
+}
+
+/* Ensure dashboard button has no dropdown arrow */
+a.tableau-de-bord-btn::after {
+  display: none;
+}
+
+.dashboard-container {
+  position: relative; /* For dashboard dropdown positioning */
+}
+
+/* Hide hamburger on desktop */
+.hamburger {
+  display: none;
+}
+
+
+/* === MOBILE NAVIGATION (Breakpoint: 768px) === */
+@media (max-width: 768px) {
+  .navbar {
+    margin: 10px;
+    border-radius: 25px;
+  }
+
+  /* Hide desktop links and show hamburger */
+  .nav-links-container {
+    display: none; /* KEY: Hide the container by default on mobile */
+  }
+
+  .hamburger {
+    display: flex; /* Show the hamburger button */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+  }
+
+  .hamburger-bar {
+    width: 1.75rem;
+    height: 0.2rem;
+    background: var(--color-violet);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+  }
+
+  /* Animate hamburger to an 'X' when active */
+  .hamburger.active .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .hamburger.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  .hamburger.active .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  /* Style the dropdown menu when it's active */
+  .nav-links-container.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--color-shadow-light);
+  }
+
+  .nav-links-container.active a {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
 }

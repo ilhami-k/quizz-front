@@ -4,43 +4,42 @@
     <button type="button" [class.active]="!isLogin" (click)="switchStates()" [disabled]="!isLogin">Inscription</button>
   </div>
 
-  <h2 class = 'title'>{{ isLogin ? 'Connexion' : 'Inscription' }}</h2>
+  <h2 class="title">{{ isLogin ? 'Bienvenue !' : 'Créez votre compte' }}</h2>
 
   <form [formGroup]="connexionForm" (ngSubmit)="isLogin ? login() : signUp()">
     <div class="form-group">
-      <label for="username">Nom d'utilisateur</label>
-      <input type="text" id="username" formControlName="username">
+      <input type="text" id="username" formControlName="username" placeholder="Nom d'utilisateur">
       <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error-field">
         <small *ngIf="username?.errors?.['required']">Nom d'utilisateur requis.</small>
       </div>
     </div>
+
     <div class="form-group signup-fields" [class.active]="!isLogin">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email">
-       <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-field">
+      <input type="email" id="email" formControlName="email" placeholder="Adresse e-mail">
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-field">
         <small *ngIf="email?.errors?.['required']">Email requis.</small>
         <small *ngIf="email?.errors?.['email']">Format d'email invalide.</small>
       </div>
     </div>
+
     <div class="form-group">
-      <label for="password">Mot de passe</label>
-      <input type="password" id="password" formControlName="password">
-       <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-field">
+      <input type="password" id="password" formControlName="password" placeholder="Mot de passe">
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-field">
         <small *ngIf="password?.errors?.['required']">Mot de passe requis.</small>
       </div>
     </div>
 
     <div class="form-group signup-fields" [class.active]="!isLogin">
-      <label for="confPassword">Confirmer le mot de passe</label>
-      <input type="password" id="confPassword" formControlName="confPassword">
-       <div *ngIf="confPassword?.invalid && (confPassword?.dirty || confPassword?.touched)" class="error-field">
+      <input type="password" id="confPassword" formControlName="confPassword" placeholder="Confirmer le mot de passe">
+      <div *ngIf="confPassword?.invalid && (confPassword?.dirty || confPassword?.touched)" class="error-field">
         <small *ngIf="confPassword?.errors?.['required']">Confirmation requise.</small>
       </div>
     </div>
 
     <button type="submit" [disabled]="(isLogin && (username?.invalid || password?.invalid)) || (!isLogin && connexionForm.invalid)">
-      {{ isLogin ? 'Connexion' : 'Inscription' }}
+      {{ isLogin ? 'Se connecter' : 'S\'inscrire' }}
     </button>
+    
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>

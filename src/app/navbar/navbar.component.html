@@ -1,22 +1,31 @@
 <nav class="navbar">
-  <div class="logo" routerLink="/">Quiz-IT</div>
-  <div class="nav-links"(click)="closeDashboard()">
-      <a routerLink="/" ><span>Accueil</span></a>
-      <a routerLink="/quiz"><span>Quiz</span></a>
-      <a routerLink="/classement"><span>Classement</span></a>
-      <a routerLink="/resultat"><span>Résultat</span></a>
+  <div class="logo" routerLink="/" (click)="closeMenus()">Quiz-IT</div>
 
+  <button class="hamburger" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
 
-      <ng-container *ngIf="authService.isLoggedIn; else loginButton">
-        <div style="position: relative;">
-          <a (click)="toggleDashboard($event)" class='tableau-de-bord-btn' style="cursor: pointer;"> <span>Tableau de bord</span> </a>
-          <app-dashboard *ngIf="showDashboard" (closeMenu)="closeDashboard()"></app-dashboard>
+  <div class="nav-links-container" [class.active]="isMobileMenuOpen">
+    <a routerLink="/" (click)="closeMenus()">Accueil</a>
+    <a routerLink="/quiz" (click)="closeMenus()">Quiz</a>
+    <a routerLink="/classement" (click)="closeMenus()">Classement</a>
+    <a routerLink="/resultat" (click)="closeMenus()">Résultat</a>
+
+    <ng-container *ngIf="authService.isLoggedIn; else loginButton">
+      <div class="dashboard-container">
+        <a (click)="toggleDashboard($event)" class='tableau-de-bord-btn'>
+          <span>Tableau de bord</span>
+        </a>
+        <app-dashboard *ngIf="showDashboard" (closeMenu)="closeMenus()"></app-dashboard>
       </div>
-      </ng-container>
+    </ng-container>
 
-      <ng-template #loginButton>
-          <a routerLink="/connexion" class='connexion' style="cursor: pointer;">  <!--TODO pouvoir aller en arriere lorsqu'on clique sur connexion une deuxième fois quand on est sur la page connexion-->
-              <span>Connexion/Inscription</span> </a>
-      </ng-template>
-      </div>
+    <ng-template #loginButton>
+      <a routerLink="/connexion" class='connexion' (click)="closeMenus()">
+        <span>Connexion/Inscription</span>
+      </a>
+    </ng-template>
+  </div>
 </nav>

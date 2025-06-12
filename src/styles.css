@@ -1,5 +1,5 @@
 :root {
-    --color-whited: #f4f4f4;
+    --color-whited: #e8bbe5;
     --color-black: #333;
     --color-white: white;
     --color-shadow-light: rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@
   }
   
   body {
-      background-color: var(--color-whited);
+      background: linear-gradient(160deg,var(--color-white) 0%, var(--color-violet));
       color: var(--color-black);
       overflow-x: hidden;
   }
