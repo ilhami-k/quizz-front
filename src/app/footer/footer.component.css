@@ -26,3 +26,11 @@ footer {
   p {
       margin-bottom: 10px;
   }
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}

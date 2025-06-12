@@ -112,7 +112,7 @@
 }
 
 .btn-start-actual-quiz {
-  background-color: var(--color-blue, #4255ff);
+  background-color: var(--color-violet);
   color: var(--color-white, #fff);
   min-width: 200px;
 }

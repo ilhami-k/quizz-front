@@ -1,12 +1,4 @@
-.hero-subtitle {
-    background-color: var(--color-background-color);
-    color: var(--color-violet);
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-bottom: 15px;
-    animation: fadeIn 0.7s ease;
-}
+
 .hero {
     text-align: center;
     padding: 80px 0;
@@ -54,4 +46,20 @@
 .btn:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px var(--color-primary-shadow);
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .left-section, .right-section {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .right-section {
+      margin-top: 30px;
+  }
 }
