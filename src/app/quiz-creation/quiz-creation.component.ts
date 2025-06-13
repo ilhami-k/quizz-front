@@ -4,8 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { QuizzService } from '../services/quizz.service';
 import { AuthService } from '../services/auth.service';
-import { Quiz, Category, Answer, QuizQuestion } from '../models/quiz.model';
-import { User } from '../models/user.model';
+import { Category, Answer } from '../models/quiz.model';
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-quiz-creation',
@@ -19,21 +19,15 @@ export class QuizCreationComponent implements OnInit {
   isLoading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  categoryError: string | null = null;
 
   private fb = inject(FormBuilder);
   private quizzService = inject(QuizzService);
   public authService = inject(AuthService);
   private router = inject(Router);
+  private categoryService = inject(CategoryService); 
 
-  categories: Category[] = [
-    { categoryId: 1, name: "Science Générale" },
-    { categoryId: 2, name: "Histoire" },
-    { categoryId: 3, name: "Mathématiques" },
-    { categoryId: 4, name: "Capitales Européennes" },
-    { categoryId: 5, name: "Pièces de Shakespeare" },
-    { categoryId: 10, name: "Culture Générale" },
-    { categoryId: 11, name: "Technologie Moderne" },
-  ];
+  categories: Category[] = [];
 
   difficultyLevels: string[] = ["Facile", "Moyen", "Difficile", "Expert"];
 
@@ -46,6 +40,8 @@ export class QuizCreationComponent implements OnInit {
     if (!this.authService.isLoggedIn) {
       this.errorMessage = "Vous devez être connecté pour créer un quiz. Veuillez vous connecter ou vous inscrire.";
     }
+    
+    this.loadCategories();
 
     this.quizForm = this.fb.group({
       title: ['', Validators.required],
@@ -57,20 +53,48 @@ export class QuizCreationComponent implements OnInit {
     });
   }
 
+  loadCategories(): void {
+    this.categoryError = null;
+    this.categoryService.getAllCategories().subscribe({
+      next: (data: Category[]) => {
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error('Error fetching categories:', err);
+        this.categoryError = 'Le chargement des catégories a échoué. Veuillez réessayer.';
+        this.errorMessage = this.categoryError;
+      }
+    });
+  }
+
   get questionsFormArray(): FormArray {
     return this.quizForm.get('questions') as FormArray;
   }
 
   createQuestionFormGroup(): FormGroup {
-    return this.fb.group({
+    const questionGroup = this.fb.group({
       questionText: ['', Validators.required],
-      questionType: [1, Validators.required], 
+      questionType: [0, Validators.required], 
       timer: [30, [Validators.required, Validators.min(5), Validators.max(300)]],
       answers: this.fb.array([
         this.createAnswerFormGroup(),
         this.createAnswerFormGroup()
       ])
     });
+
+    const questionTypeControl = questionGroup.get('questionType');
+    if (questionTypeControl) {
+      questionTypeControl.valueChanges.subscribe(type => {
+        const answersArray = questionGroup.get('answers') as FormArray;
+        if (type === 1) { 
+          while (answersArray.length > 2) {
+            answersArray.removeAt(answersArray.length - 1);
+          }
+        }
+      });
+    }
+
+    return questionGroup;
   }
 
   addQuestion(): void {
@@ -86,11 +110,7 @@ export class QuizCreationComponent implements OnInit {
   }
 
   answersFormArray(questionIndex: number): FormArray {
-    const questionControl = this.questionsFormArray.at(questionIndex);
-    if (questionControl) {
-        return questionControl.get('answers') as FormArray;
-    }
-    return this.fb.array([]);
+    return this.questionsFormArray.at(questionIndex).get('answers') as FormArray;
   }
 
   createAnswerFormGroup(isCorrectDefault = false): FormGroup {
@@ -101,12 +121,32 @@ export class QuizCreationComponent implements OnInit {
   }
 
   addAnswer(questionIndex: number): void {
+    this.errorMessage = null;
     const answers = this.answersFormArray(questionIndex);
-    if (answers.length < 6) {
-        answers.push(this.createAnswerFormGroup());
-    } else {
-        this.errorMessage = "Maximum de 6 options de réponse par question.";
+    const questionType = this.questionsFormArray.at(questionIndex).get('questionType')?.value;
+
+    if (questionType === 1 && answers.length >= 2) {
+      this.errorMessage = "Pour une question Vrai/Faux, seulement deux réponses sont autorisées.";
+      return;
     }
+
+    if (answers.length >= 6) {
+        this.errorMessage = "Maximum de 6 options de réponse par question.";
+        return;
+    }
+    
+    answers.push(this.createAnswerFormGroup());
+  }
+
+  canAddAnswer(questionIndex: number): boolean {
+    const questionGroup = this.questionsFormArray.at(questionIndex) as FormGroup;
+    const questionType = questionGroup.get('questionType')?.value;
+    const answers = questionGroup.get('answers') as FormArray;
+
+    if (questionType === 1) { 
+      return answers.length < 2;
+    }
+    return answers.length < 6;
   }
 
   removeAnswer(questionIndex: number, answerIndex: number): void {
@@ -173,7 +213,7 @@ export class QuizCreationComponent implements OnInit {
       title: formValue.title,
       description: formValue.description,
       categoryId: +formValue.categoryId,
-      dificulty: numericDifficulty,
+      difficulty: numericDifficulty,
       userId: loggedInUser.userId,
       isVisible: formValue.isVisible,
       questions: formValue.questions.map((q: any) => ({

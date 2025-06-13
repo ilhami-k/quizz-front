@@ -40,6 +40,9 @@
         <div *ngIf="quizForm.get('categoryId')?.invalid && quizForm.get('categoryId')?.touched" class="validation-error">
           La sélection d'une catégorie est requise.
         </div>
+        <div *ngIf="categoryError" class="validation-error">
+          {{ categoryError }}
+        </div>
       </div>
 
       <div class="form-group">
@@ -106,7 +109,7 @@
                 Le texte de la réponse est requis.
               </div>
             </div>
-            <button type="button" (click)="addAnswer(i)" class="btn btn-add btn-add-answer" *ngIf="answersFormArray(i).length < 6">+ Ajouter une Option de Réponse</button>
+            <button type="button" (click)="addAnswer(i)" class="btn btn-add btn-add-answer" *ngIf="canAddAnswer(i)">+ Ajouter une Option de Réponse</button>
           </div>
           <hr *ngIf="i < questionsFormArray.length - 1" class="question-divider">
         </div>
